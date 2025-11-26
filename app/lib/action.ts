@@ -7,26 +7,39 @@ export async function handlelogin(
   accessToken: string,
   refreshToken: string
 ) {
-  //const cookieStore = await cookies();
+  const cookieStore = await cookies();
 
-  cookies().set("session_userID", userId, {
+  cookieStore.set("session_userID", userId, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     maxAge: 60 * 60 * 24 * 7, // 1 week
     path: "/",
   });
 
-  cookies().set("session_access_token", accessToken, {
+  cookieStore.set("session_access_token", accessToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     maxAge: 60 * 60, // 60 minutes
     path: "/",
   });
 
-  cookies().set("session_refresh_token", refreshToken, {
+  cookieStore.set("session_refresh_token", refreshToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     maxAge: 60 * 60 * 24 * 7, // 1 week
     path: "/",
   });
+}
+
+export async function resetAuthCookies() {
+  const cookieStore = await cookies();
+  cookieStore.set("session_userID", "");
+  cookieStore.set("session_access_token", "");
+  cookieStore.set("session_refresh_token", "");
+}
+
+export async function getUserId() {
+  const cookieStore = await cookies();
+  const userId = cookieStore.get("session_userID")?.value;
+  return userId ? userId : null;
 }
