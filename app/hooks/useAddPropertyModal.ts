@@ -11,4 +11,5 @@ const useAddPropertyModal = create<AddPropertyModalStore>((set) => ({
   open: () => set({ isOpen: true }),
   close: () => set({ isOpen: false }),
 }));
+
 export default useAddPropertyModal;

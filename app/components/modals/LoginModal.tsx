@@ -17,31 +17,70 @@ const LoginModal = () => {
   const [errors, setErrors] = useState<string[]>([]);
 
   const submitLogin = async () => {
+    setErrors([]);
+
     const formData = {
       email: email,
       password: password,
     };
 
-    const response = await apiService.postWithoutToken(
-      "/api/auth/login/",
-      JSON.stringify(formData)
-    );
+    try {
+      const response = await apiService.postWithoutToken(
+        "/api/auth/login/",
+        JSON.stringify(formData)
+      );
 
-    if (response.access) {
-      handleLogin(response.user.pk, response.access, response.refresh);
+      if (response.access) {
+        handleLogin(response.user.pk, response.access, response.refresh);
 
-      loginModal.close();
+        loginModal.close();
 
-      router.push("/");
-    } else {
-      setErrors(response.non_field_errors);
+        router.push("/");
+      } else {
+        const tmpErrors: string[] = [];
+        if (response.non_field_errors)
+          tmpErrors.push(...response.non_field_errors);
+        if (response.email) tmpErrors.push(...response.email);
+        if (response.password) tmpErrors.push(...response.password);
+        setErrors(tmpErrors.length ? tmpErrors : ["Login failed"]);
+      }
+    } catch (error: any) {
+      const tmpErrors: string[] = [];
+      // Try to parse JSON error body from error.message
+      try {
+        const jsonStart = error?.message?.indexOf("{");
+        if (jsonStart !== -1) {
+          const jsonStr = error.message.slice(jsonStart);
+          const obj = JSON.parse(jsonStr);
+          Object.values(obj).forEach((val: any) => {
+            if (Array.isArray(val)) {
+              tmpErrors.push(...val.map((v) => String(v)));
+            } else {
+              tmpErrors.push(String(val));
+            }
+          });
+        }
+      } catch {}
+
+      setErrors(
+        tmpErrors.length
+          ? tmpErrors
+          : ["Login failed. Please check your email and password."]
+      );
     }
   };
 
   const content = (
     <>
-      <form action={submitLogin} className="space-y-4">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          submitLogin();
+        }}
+        className="space-y-4"
+      >
         <input
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Your e-mail address"
           type="email"
@@ -49,6 +88,7 @@ const LoginModal = () => {
         />
 
         <input
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Your password"
           type="password"

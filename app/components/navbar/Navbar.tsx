@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+
 import SearchFilters from "./SearchFilters";
 import UserNav from "./UserNav";
 import { getUserId } from "@/app/lib/actions";
@@ -7,7 +8,8 @@ import AddPropertyButton from "./AddPropertyButton";
 
 const Navbar = async () => {
   const userId = await getUserId();
-  console.log("Navbar userId:", userId);
+
+  console.log("userId", userId);
 
   return (
     <nav className="w-full fixed top-0 left-0 py-6 border-b bg-white z-10">
@@ -23,10 +25,12 @@ const Navbar = async () => {
           </Link>
 
           <div className="flex space-x-6">
-            <SearchFilters></SearchFilters>
+            <SearchFilters />
           </div>
+
           <div className="flex items-center space-x-6">
             <AddPropertyButton userId={userId} />
+
             <UserNav userId={userId} />
           </div>
         </div>
@@ -34,4 +38,5 @@ const Navbar = async () => {
     </nav>
   );
 };
+
 export default Navbar;

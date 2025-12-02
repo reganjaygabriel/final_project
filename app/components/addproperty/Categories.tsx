@@ -61,9 +61,9 @@ const Categories: React.FC<CategoriesProps> = ({
         </div>
 
         <div
-          onClick={() => setCategory("Tiny homes")}
+          onClick={() => setCategory("Tiny_homes")}
           className={`pb-4 flex flex-col items-center space-y-2 border-b-2 ${
-            dataCategory == "Tiny homes" ? "border-gray-800" : "border-white"
+            dataCategory == "Tiny_homes" ? "border-gray-800" : "border-white"
           } opacity-60 hover:border-gray-200 hover:opacity-100`}
         >
           <Image

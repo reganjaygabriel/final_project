@@ -9,7 +9,7 @@ export type SelectCountryValue = {
 };
 
 interface SelectCountryProps {
-  value?: SelectCountryValue | null;
+  value?: SelectCountryValue;
   onChange: (value: SelectCountryValue) => void;
 }
 
@@ -17,13 +17,15 @@ const SelectCountry: React.FC<SelectCountryProps> = ({ value, onChange }) => {
   const { getAll } = useCountries();
 
   return (
-    <Select
-      isClearable
-      placeholder="Anywhere"
-      options={getAll()}
-      value={value ?? null}
-      onChange={(v) => v && onChange(v as SelectCountryValue)}
-    />
+    <>
+      <Select
+        isClearable
+        placeholder="Anywhere"
+        options={getAll()}
+        value={value}
+        onChange={(value) => onChange(value as SelectCountryValue)}
+      />
+    </>
   );
 };
 
