@@ -16,9 +16,23 @@ export type PropertyType = {
 const PropertyList = () => {
   const [properties, setProperties] = useState<PropertyType[]>([]);
   const getProperties = async () => {
-    const tmpProperties = await apiService.get("/api/properties/");
+    try {
+      const response = await apiService.get("/api/properties/");
+      console.log("API Response:", response);
 
-    setProperties(tmpProperties.data);
+      // Handle different response structures
+      if (response && response.data) {
+        setProperties(response.data);
+      } else if (Array.isArray(response)) {
+        setProperties(response);
+      } else {
+        console.error("Unexpected response structure:", response);
+        setProperties([]);
+      }
+    } catch (error) {
+      console.error("Error fetching properties:", error);
+      setProperties([]);
+    }
   };
   useEffect(() => {
     getProperties();
