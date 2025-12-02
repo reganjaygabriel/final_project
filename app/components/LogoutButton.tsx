@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { resetAuthCookies } from "@/app/lib/action";
+import { resetAuthCookies } from "@/app/lib/actions";
 import MenuLink from "./navbar/MenuLink";
 
 const LogoutButton: React.FC = () => {

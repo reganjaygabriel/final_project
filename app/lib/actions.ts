@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 
-export async function handlelogin(
+export async function handleLogin(
   userId: string,
   accessToken: string,
   refreshToken: string

@@ -5,8 +5,9 @@ const formattedCountries = countries.map((country) => ({
   label: country.name.common,
 }));
 
-export const useCountries = () => {
+const useCountries = () => {
   const getAll = () => formattedCountries;
+
   const getByValue = (value: string) => {
     return formattedCountries.find((item) => item.value === value);
   };
@@ -16,4 +17,5 @@ export const useCountries = () => {
     getByValue,
   };
 };
+
 export default useCountries;

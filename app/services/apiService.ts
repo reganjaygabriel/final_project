@@ -1,4 +1,4 @@
-import { getAccessToken } from "../lib/action";
+import { getAccessToken } from "../lib/actions";
 
 const apiService = {
   get: async function (url: string): Promise<any> {
