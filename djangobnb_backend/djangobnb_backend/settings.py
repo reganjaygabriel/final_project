@@ -2,36 +2,28 @@ import os
 
 from datetime import timedelta
 from pathlib import Path
-# from dotenv import load_dotenv
-
-# load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True #bool(os.environ.get("DEBUG", default=0))
+DEBUG = bool(os.environ.get("DEBUG", default=0))
 
-if DEBUG:
-    ALLOWED_HOSTS = ["localhost", "127.0.0.1", "64.226.81.32"]
-else:
-    ALLOWED_HOSTS = ["64.226.81.32"]
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS]
 
 AUTH_USER_MODEL = 'useraccount.User'
 
 SITE_ID = 1
 
-if DEBUG:
-    WEBSITE_URL = 'http://localhost:8000'
-else:
-    WEBSITE_URL = 'http://64.226.81.32:1337'
+WEBSITE_URL = 'http://localhost:8000'
 
 CHANNEL_LAYERS = {
     'default': {
@@ -67,32 +59,20 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8000',
     'http://127.0.0.1:3000',
-    'http://64.226.81.32',
-    'http://64.226.81.32:1337'
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    'http://127.0.0.1:8000',
-    'http://127.0.0.1:3000',
-    'http://64.226.81.32',
-    'http://64.226.81.32:1337'
-]
-
-CORS_ORIGINS_WHITELIST = [
-    'http://127.0.0.1:8000',
-    'http://127.0.0.1:3000',
-    'http://64.226.81.32',
-    'http://64.226.81.32:1337'
+    "http://localhost:3000",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 REST_AUTH = {
     "USE_JWT": True,
     "JWT_AUTH_HTTPONLY": False
 }
 
+
 # Application definition
+
 
 INSTALLED_APPS = [
     'daphne',
@@ -140,7 +120,6 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -154,7 +133,7 @@ ASGI_APPLICATION = 'djangobnb_backend.asgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -169,7 +148,7 @@ DATABASES = {
 
 
 # Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -188,7 +167,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/5.0/topics/i18n/
+# https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -200,13 +179,13 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
+# https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
