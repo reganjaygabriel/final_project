@@ -20,7 +20,6 @@ class ConversationDetailSerializer(serializers.ModelSerializer):
         model = Conversation
         fields = ('id', 'users', 'modified_at',)
 
-
 class ConversationMessageSerializer(serializers.ModelSerializer):
     sent_to = UserDetailSerializer(many=False, read_only=True)
     created_by = UserDetailSerializer(many=False, read_only=True)
