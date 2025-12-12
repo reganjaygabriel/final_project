@@ -18,7 +18,7 @@ DEBUG = bool(os.environ.get("DEBUG",default=0))
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS]
-#ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(",")
 
 AUTH_USER_MODEL = 'useraccount.User'
 
@@ -82,10 +82,10 @@ INSTALLED_APPS = [
     'allauth.account',
 
     'dj_rest_auth',
-    #'dj_rest_auth.authentication',
 
     'corsheaders',
 
+    'chat',
     'property',
     'useraccount',
 ]
