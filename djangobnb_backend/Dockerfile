@@ -18,3 +18,4 @@ RUN chmod +x /usr/src/djangobnb_backend/entrypoint.sh
 COPY . .
 
 ENTRYPOINT [ "/usr/src/djangobnb_backend/entrypoint.sh" ]
+
