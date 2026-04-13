@@ -21,9 +21,24 @@ class Property(models.Model):
     image = models.ImageField(upload_to='uploads/properties')
     landlord = models.ForeignKey(User, related_name='properties', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    is_deleted = models.BooleanField(default=False)
+    deleted_at = models.DateTimeField(null=True, blank=True)
 
     def image_url(self):
         return f'{settings.WEBSITE_URL}{self.image.url}'
+    
+    def soft_delete(self):
+        """Soft delete the property"""
+        from django.utils import timezone
+        self.is_deleted = True
+        self.deleted_at = timezone.now()
+        self.save()
+    
+    def restore(self):
+        """Restore a soft deleted property"""
+        self.is_deleted = False
+        self.deleted_at = None
+        self.save()
 
 
 class Reservation(models.Model):

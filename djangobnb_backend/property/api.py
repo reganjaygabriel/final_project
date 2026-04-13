@@ -28,7 +28,7 @@ def properties_list(request):
     #
 
     favorites = []
-    properties = Property.objects.all()
+    properties = Property.objects.filter(is_deleted=False)
 
      #
     # Filter
@@ -181,3 +181,23 @@ def toggle_favorite(request, pk):
         property.favorited.add(request.user)
 
         return JsonResponse({'is_favorite': True})
+
+
+@api_view(['DELETE'])
+def delete_property(request, pk):
+    try:
+        property = Property.objects.get(pk=pk, landlord=request.user)
+        property.soft_delete()
+        return JsonResponse({'success': True, 'message': 'Property deleted successfully'})
+    except Property.DoesNotExist:
+        return JsonResponse({'success': False, 'message': 'Property not found or you do not have permission'}, status=404)
+
+
+@api_view(['GET'])
+def landlord_reservations(request):
+    """Get all reservations for properties owned by the landlord"""
+    properties = Property.objects.filter(landlord=request.user, is_deleted=False)
+    reservations = Reservation.objects.filter(property__in=properties).order_by('-created_at')
+    
+    serializer = ReservationsListSerializer(reservations, many=True)
+    return JsonResponse(serializer.data, safe=False)

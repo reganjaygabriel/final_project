@@ -39,5 +39,12 @@ class ReservationsListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservation
         fields = (
-            'id', 'start_date', 'end_date', 'number_of_nights', 'total_price', 'property'
+            'id', 'start_date', 'end_date', 'number_of_nights', 'total_price', 'guests', 'property', 'created_by'
         )
+    
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        # Add guest name/email
+        representation['guest_name'] = instance.created_by.name or instance.created_by.email
+        representation['guest_email'] = instance.created_by.email
+        return representation
